@@ -1,5 +1,6 @@
 from email.Header import Header
 from email.MIMEText import MIMEText
+from GPG import GPG
 from twisted.internet import protocol, reactor, defer
 from twisted.mail import smtp
 from twisted.mail.smtp import sendmail
@@ -7,9 +8,9 @@ from zope.interface import implements
 import os, email, email.Utils
 import smtplib
 
-STORAGE_DIR = "/Users/Nick/cryptorelay/storage/"
+STORAGE_DIR = "/home/nick/Projects/cryptorelay/storage/"
 SMTP_SERVER = "localhost"
-TEST_EMAIL = "strategicpause@gmail.com"
+TEST_EMAIL = "dcwhitesell@gmail.com"
 
 class MailSender(object):
     implements(smtp.IMessage)
@@ -17,21 +18,25 @@ class MailSender(object):
     def __init__(self,toAddr):
     	self.toAddr = toAddr # Who are we sending the encrypted email to?
         self.lines = []
+	self.gpg = GPG()
     
     def lineReceived(self, line):
         self.lines.append(line)
 
     def eomReceived(self):
-    	msgRcv = email.message_from_string('\n'.join(self.lines)) # Message we recieved
-    	msg = MIMEText(msgRcv.get_payload()) # This will be the message that we send
+	# Message we recieved
+    	msgRcv = email.message_from_string('\n'.join(self.lines)) 
+	# This will be the message that we send
+	payload = msgRcv.get_payload()
+    	msg = MIMEText(self.gpg.encrypt(payload,TEST_EMAIL,always_trust=True).data) 
     	msg['Subject'] = msgRcv['Subject']
         msg['From'] = email.Utils.parseaddr(msgRcv['From'])[1]
         msg['To'] = TEST_EMAIL
-        print msg  	
+        print msg 	
         #s = smtplib.SMTP(SMTP_SERVER)
         #s.sendmail(msg['From'], msg['To'], msg)
         d = defer.Deferred()
-        d.callback(message)
+        d.callback(msg)
         return d
 
     def connectionLost(self):

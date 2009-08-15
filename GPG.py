@@ -114,9 +114,15 @@ class GPG:
             if self.verbose: print line
             if line == "": break
             line = line.rstrip()
+            flag = False
             if line[0:9] == '[GNUPG:] ':
                 # Chop off the prefix
                 line = line[9:]
+                flag = True
+            #if line[0:5] == 'gpg: ':
+            #    line = line[5:]
+            #    flag = True
+            if flag:
                 L = line.split(None, 1)
                 keyword = L[0]
                 if len(L) > 1:
@@ -202,7 +208,7 @@ class GPG:
     # KEY MANAGEMENT
     #
 
-    def import_key(self, key_data):
+    def import_key(self, key_data, is_file=False):
         """ import the key_data into our keyring 
 
         >>> import shutil
@@ -243,17 +249,26 @@ class GPG:
         >>> assert print2 in pubkeys.fingerprints
 
         """
+
+	if is_file:
+ 		if os.path.isfile(key_data):
+			f = open(key_data, "r")
+			key_data = ",".join(f.readlines())
+			f.close()
+ 		else:
+ 			return ImportResult()
         child_stdout, child_stdin, child_stderr = \
             self._open_subprocess(['--import'])
-
+ 
         child_stdin.write(key_data)
         child_stdin.close()
-
+ 
         # Get the response information
         result = ImportResult()
         resp = self._read_response(child_stderr, result)
-
+ 
         return result
+
 
     def delete_key(self,fingerprint,secret=False):
         which='key'
@@ -421,7 +436,7 @@ class GPG:
     def fingerprints(self,keyid='',secret=False):
         keys = self.list_keys(secret=True)
         return keys.fingerprints
-
+        
     #
     # ENCRYPTION
     #
@@ -563,6 +578,10 @@ class ImportResult:
     def NODATA(self, value):
         self.results.append({'fingerprint': None,
             'problem': '0', 'text': 'No valid data found'})
+    def UNKNOWN(self, value):
+	self.results.append({'fingerprint': None,
+	    'problem': '0', 'text': 'Unknown armor header.'})
+
     def IMPORTED(self, value):
         # this duplicates info we already see in import_ok and import_problem
         pass
