@@ -57,7 +57,8 @@ Thu Jun 23 21:27:20 PDT 2005
 
 import os
 import StringIO
-import popen2
+#import popen2
+import subprocess
 
 class GPG:
 
