@@ -54,18 +54,17 @@
 </node>
 </node>
 </node>
-<node CREATED="1250053284029" ID="Freemind_Link_1927388515" MODIFIED="1250053286393" POSITION="right" TEXT="Inputs">
+<node CREATED="1250053284029" FOLDED="true" ID="Freemind_Link_1927388515" MODIFIED="1250053286393" POSITION="right" TEXT="Inputs">
 <node CREATED="1250053288446" FOLDED="true" ID="Freemind_Link_1072063595" MODIFIED="1250053297158" TEXT="email address">
-<node CREATED="1250053297542" ID="Freemind_Link_765503396" MODIFIED="1250053298389" TEXT="ideal">
-<node CREATED="1250053306870" ID="Freemind_Link_1827027334" MODIFIED="1250053313414" TEXT="query keyserver for public key"/>
-<node CREATED="1250053313907" ID="Freemind_Link_870004358" MODIFIED="1250053336134" TEXT="would need to send the user an encrypted &quot;verification&quot; link to make sure they are the real thing"/>
-</node>
+<node CREATED="1250053297542" ID="Freemind_Link_765503396" MODIFIED="1250454926124" TEXT="(This is the ideal case, but damnit, querying keyservers isn&apos;t easy to do right!)"/>
+<node CREATED="1250053306870" ID="Freemind_Link_1827027334" MODIFIED="1250454935844" TEXT="1: query keyserver for public key"/>
+<node CREATED="1250053313907" ID="Freemind_Link_870004358" MODIFIED="1250454941053" TEXT="2: would need to send the user an encrypted &quot;verification&quot; link to make sure they are the real thing"/>
 </node>
 <node CREATED="1250053299297" ID="Freemind_Link_183333113" MODIFIED="1250053301074" TEXT="public key"/>
 </node>
 <node CREATED="1250053337969" ID="Freemind_Link_433190843" MODIFIED="1250053339733" POSITION="right" TEXT="Problems">
 <node CREATED="1250053339985" FOLDED="true" ID="Freemind_Link_1386382859" MODIFIED="1250053356909" TEXT="Why should somebody trust me with their most sensitive email?">
-<node CREATED="1250053358218" ID="Freemind_Link_416995869" MODIFIED="1250053367058" TEXT="project should be built with self-hosting in mind!"/>
+<node CREATED="1250053358218" ID="Freemind_Link_416995869" MODIFIED="1250454855121" TEXT="People would be justified in now trusting us, this project should be built with the goal of allowing users to host this service themselves."/>
 </node>
 </node>
 <node CREATED="1250053379800" FOLDED="true" ID="Freemind_Link_116473364" MODIFIED="1250053381579" POSITION="left" TEXT="Goals">
@@ -79,18 +78,27 @@
 </node>
 <node CREATED="1250453626851" ID="Freemind_Link_853132576" MODIFIED="1250453629301" POSITION="right" TEXT="workflow">
 <node CREATED="1250453849593" FOLDED="true" ID="Freemind_Link_1021250535" MODIFIED="1250453851371" TEXT="internal">
-<node CREATED="1250453629817" FOLDED="true" ID="Freemind_Link_1334198935" MODIFIED="1250453845814" TEXT="paste public key into form">
-<node CREATED="1250453642604" ID="Freemind_Link_1718263867" MODIFIED="1250453650021" TEXT="validate public key"/>
-<node CREATED="1250453650345" ID="Freemind_Link_1258310880" MODIFIED="1250453654092" TEXT="strip out email address"/>
-<node CREATED="1250453654792" ID="Freemind_Link_102873422" MODIFIED="1250453657650" TEXT="validate email address"/>
+<node CREATED="1250454347383" ID="Freemind_Link_1990082311" MODIFIED="1250454350401" TEXT="web interface">
+<node CREATED="1250453629817" FOLDED="true" ID="Freemind_Link_1334198935" MODIFIED="1250454688903" TEXT="1: user pastes public key into form">
+<node CREATED="1250453642604" ID="Freemind_Link_1718263867" MODIFIED="1250454394556" TEXT="we validate that the users public key is well formed"/>
+<node CREATED="1250453650345" ID="Freemind_Link_1258310880" MODIFIED="1250454415845" TEXT="we get the users email address from the public key"/>
+<node CREATED="1250453654792" ID="Freemind_Link_102873422" MODIFIED="1250454427456" TEXT="we validate that the email address appears to be well formed"/>
 </node>
-<node CREATED="1250453658869" FOLDED="true" ID="Freemind_Link_1073719102" MODIFIED="1250453680864" TEXT="send confirmation email to address">
-<node CREATED="1250453681117" ID="Freemind_Link_517792511" MODIFIED="1250453729554" TEXT="validation link should be in the encrypted payload, this way we validate that they have access to the private key AND the email account"/>
+<node CREATED="1250454486430" ID="Freemind_Link_1426884670" MODIFIED="1250454695292" TEXT="2: we communicate to the email server that a user has requested an &quot;account&quot;"/>
+<node CREATED="1250454577981" ID="Freemind_Link_431383061" MODIFIED="1250454763928" TEXT="6: user clicks a confirmation link"/>
+<node CREATED="1250454588489" ID="Freemind_Link_551610094" MODIFIED="1250454767841" TEXT="7: we verify that the confirmation link is valid"/>
+<node CREATED="1250454614424" ID="Freemind_Link_1228512781" MODIFIED="1250454776747" TEXT="8: we send a message to the email server saying that the user account is valid"/>
 </node>
-<node CREATED="1250453748000" ID="Freemind_Link_938514630" MODIFIED="1250453754658" TEXT="mark email address is pending"/>
-<node CREATED="1250453754910" ID="Freemind_Link_85786631" MODIFIED="1250453844751" TEXT="get confirmation click"/>
-<node CREATED="1250453759115" FOLDED="true" ID="Freemind_Link_774014251" MODIFIED="1250453763749" TEXT="mark email address as working">
+<node CREATED="1250454350838" ID="Freemind_Link_871355278" MODIFIED="1250454354160" TEXT="email server">
+<node CREATED="1250454510989" ID="Freemind_Link_1367479269" MODIFIED="1250454703506" TEXT="3: we get a message from the web interface that a user is requesting an &quot;account&quot;"/>
+<node CREATED="1250453748000" ID="Freemind_Link_938514630" MODIFIED="1250454750721" TEXT="4: we create a new account and mark it as pending"/>
+<node CREATED="1250453658869" FOLDED="true" ID="Freemind_Link_1073719102" MODIFIED="1250454754907" TEXT="5: we send a confirmation email to the user">
+<node CREATED="1250453681117" ID="Freemind_Link_517792511" MODIFIED="1250454463305" TEXT="the validation link should be in the encrypted payload, this way we validate that they have access to the private key AND the email account"/>
+</node>
+<node CREATED="1250453754910" ID="Freemind_Link_85786631" MODIFIED="1250454786265" TEXT="9: we get a message from the web interface that an account is valid"/>
+<node CREATED="1250453759115" FOLDED="true" ID="Freemind_Link_774014251" MODIFIED="1250454791984" TEXT="10: we mark the account as active">
 <node CREATED="1250453764410" ID="Freemind_Link_918306902" MODIFIED="1250453806004" TEXT="eventually we might want to sign their public key, since we trust that the email address is read by somebody with access to the public key"/>
+</node>
 </node>
 </node>
 <node CREATED="1250453855646" ID="Freemind_Link_1016857824" MODIFIED="1250453857161" TEXT="external">
